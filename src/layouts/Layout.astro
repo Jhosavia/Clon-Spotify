@@ -25,7 +25,7 @@ import { Player } from "@/components/Player"
 			<slot />
 		</main>
 		<footer class="[grid-area:player] min-h-[100px]">
-			<Player client:load/>
+			<Player client:only="react" transition:name="media-player" transition:persist/>
 		</footer>
 		
 		</div>
