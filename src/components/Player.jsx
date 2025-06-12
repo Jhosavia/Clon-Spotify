@@ -10,26 +10,55 @@ export const Play = () => (
 <svg viewBox="0 0 24 24" class="h-8 w-8" fill="currentColor"
   ><path fill="currentColor" d="M8 5.14v14l11-7-11-7z"></path></svg>
 )
-export function Player(){
-    const {isPlaying, setIsPlaying}=usePlayerStore(state=>state)
-    const [CurrentSong, setCurrentSong] = useState(null)
-    const audioRef = useRef()
-    useEffect(()=> {
-        audioRef.current.src=`/music/1/01.mp3`
-    },[]
+
+const CurrentSong=({image,title,artists}) =>{
+    return (
+        <div
+        className={`flex items-center gap-5 relative
+        overflow-hidden`}>
+        <picture className="w-16 h-16 bg-zinc-800 rounded-md shadow-lg overflow-hidden">
+            <img src={image} alt={title} />
+        </picture>
+        <div className="flex flex-col">
+        <h3 className="font-semibold text-sm block">
+            {title}
+
+        </h3>
+        <span className="text-xs opacity-80">
+            {artists?.join(', ')}
+            </span>
+        </div>
+        </div>
     )
-    const handleClick = () => {
-        if(isPlaying){
-            audioRef.current.pause()
-        }else{
-        audioRef.current.play()
+}
+
+
+export function Player(){
+    const {currentMusic,isPlaying, setIsPlaying}=usePlayerStore(state=>state)
+    const audioRef = useRef()
+    useEffect(()=>{
+        isPlaying
+        ? audioRef.current.play()
+        : audioRef.current.pause()
+    },[isPlaying])
+
+    useEffect(()=>{
+        const{song,playlist,songs}=currentMusic
+        if(song){
+            const src=`/music/${playlist?.id}/0${song.id}.mp3`
+            audioRef.current.src=src
+            audioRef.current.play()
         }
+    },[currentMusic])
+
+
+    const handleClick = () => {
         setIsPlaying(!isPlaying)
     }
     return(
         <div className="flex flex-row justify-between w-full px-4 z-50">
             <div>
-                CurrentSong...
+                <CurrentSong {... currentMusic.song}/>
             </div>
             <div className="grid place-content-center gap-4 flex-1">
                 <div className="flex justify-center">
