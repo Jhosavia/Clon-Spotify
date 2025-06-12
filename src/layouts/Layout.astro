@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import AsideMenu from '../components/AsideMenu.astro'
 import { ViewTransitions } from "astro:transitions";
+import { Player } from "@/components/Player"
 ---
 <!doctype html>
 <html lang="en">
@@ -23,7 +24,9 @@ import { ViewTransitions } from "astro:transitions";
 		<main class="[grid-area:main] rounded-lg bg-zinc-900 overflow-y-auto">
 			<slot />
 		</main>
-		<footer class="[grid-area:player] min-h-[100px]">player</footer>
+		<footer class="[grid-area:player] min-h-[100px]">
+			<Player client:load/>
+		</footer>
 		
 		</div>
 	</body>
